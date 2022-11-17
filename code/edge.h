@@ -1,3 +1,4 @@
-class Edge {
 
+class Edge {
+    typedef std::string Vertex;
 };
