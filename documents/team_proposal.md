@@ -18,7 +18,7 @@ We will parse the input using an ifstream and add the data to our structure. For
 
 
 ## Data Storage
-We will be coding our own adjacency set data structure to store vertices (airports) and edges (flights).We will also be using disjoint sets to query whether an airport is connected at all to another airport, and we can also use this data structure to count the number of connected groups of airports. To find the shortest path from airport A to airport B, we will use Dijkstra’s Algorithm, and the data structure that is optimal for this algorithm in terms of runtime and space is the disjoint sets and adjacency set. Since we will need to store both nodes and edges, and each edge should theoretically be bi-directional (undirected graph), the space complexity will be O(n^2) where n is the number of airports in the dataset. The maximum number of possible edges for each node will be (n-1). Thus, the storage complexity in our adjacency set will be O(n*(n-1)) which is O(n^2).
+We will be coding our own adjacency set data structure to store vertices (airports) and edges (flights). To find the shortest path from airport A to airport B, we will use Dijkstra’s Algorithm, and the data structure that is optimal for this algorithm in terms of runtime and space are vectors and the adjacency set. Since we will need to store both nodes and edges, and each edge should theoretically be bi-directional (undirected graph), the space complexity will be O(n^2) where n is the number of airports in the dataset. The maximum number of possible edges for each node will be (n-1). Thus, the storage complexity in our adjacency set will be O(n*(n-1)) which is O(n^2).
 
 ## Algorithm 
 Algorithm 1: BFS
