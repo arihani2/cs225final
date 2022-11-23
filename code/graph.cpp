@@ -8,15 +8,11 @@ vector<Vertex> Graph::getAdjacent(Vertex source) const
 {
     auto lookup = adjacency_list.find(source);
 
-    if(lookup == adjacency_list.end())
-        return vector<Vertex>();
-
-    else
-    {
+    if(lookup == adjacency_list.end()) return vector<Vertex>();
+    else {
         vector<Vertex> vertex_list;
-        unordered_map <Vertex, Edge> & map = adjacency_list[source];
-        for (auto it = map.begin(); it != map.end(); it++)
-        {
+        unordered_map <Vertex, Edge>& map = adjacency_list[source];
+        for (auto it = map.begin(); it != map.end(); it++) {
             vertex_list.push_back(it->first);
         }
         return vertex_list;
@@ -119,27 +115,31 @@ bool Graph::assertVertexExists(Vertex v, string functionName) const
 
 bool Graph::assertEdgeExists(Vertex source, Vertex destination, string functionName) const
 {
-    if(assertVertexExists(source,functionName) == false)
-        return false;
-    if(adjacency_list[source].find(destination)== adjacency_list[source].end())
-    {
-        if (functionName != "")
-            error(functionName + " called on nonexistent edge " + source + " -> " + destination);
-        return false;
-    }
+    auto findSource = adjacency_list.find(source);
+    //The source vertex does not exist in the adjacency list
+    if(findSource == adjacency_list.end()) return false;
+    
+    // if(assertVertexExists(source,functionName) == false)
+    //     return false;
+    // if(adjacency_list[source].find(destination)== adjacency_list[source].end())
+    // {
+    //     if (functionName != "")
+    //         error(functionName + " called on nonexistent edge " + source + " -> " + destination);
+    //     return false;
+    // }
 
-    if(!directed)
-    {
-        if (assertVertexExists(destination,functionName) == false)
-            return false;
-        if(adjacency_list[destination].find(source)== adjacency_list[destination].end())
-        {
-            if (functionName != "")
-                error(functionName + " called on nonexistent edge " + destination + " -> " + source);
-            return false;
-        }
-    }
-    return true;
+    // if(!directed)
+    // {
+    //     if (assertVertexExists(destination,functionName) == false)
+    //         return false;
+    //     if(adjacency_list[destination].find(source)== adjacency_list[destination].end())
+    //     {
+    //         if (functionName != "")
+    //             error(functionName + " called on nonexistent edge " + destination + " -> " + source);
+    //         return false;
+    //     }
+    // }
+    // return true;
 }
 
 void Graph::clear()
