@@ -71,7 +71,7 @@ class Edge
      */
     bool operator<(const Edge& other) const
     {
-        return distance < other.distance;
+        return distance < other.getDistance();
     }
 
 
