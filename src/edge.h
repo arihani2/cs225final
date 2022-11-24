@@ -17,6 +17,8 @@ typedef string Vertex;
  * @author Matthew Lee
  * @date Fall 2022
  */
+
+//TODO: get rid of label constructor and implement a new constructor that has the weight
 class Edge
 {
   public:

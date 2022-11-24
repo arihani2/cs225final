@@ -110,7 +110,7 @@ class Graph {
          * @param functionName - the name of the calling function to return
          *  in the event of an error
          */
-        bool assertVertexExists(Vertex v, string functionName) const;
+        bool assertVertexExists(Vertex v) const;
 
         /**
          * Returns whether thee edge exists in the graph.
@@ -119,6 +119,6 @@ class Graph {
          * @param functionName - the name of the calling function to return
          *  in the event of an error
          */
-        bool assertEdgeExists(Vertex source, Vertex destination, string functionName) const;
+        bool assertEdgeExists(Vertex source, Vertex destination) const;
 
 };
