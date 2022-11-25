@@ -6,7 +6,6 @@
 #pragma once
 
 #include <string>
-#include <limits.h>
 
 using std::string;
 
@@ -18,7 +17,6 @@ typedef string Vertex;
  * @date Fall 2022
  */
 
-//TODO: get rid of label constructor and implement a new constructor that has the weight
 class Edge
 {
   public:
@@ -36,24 +34,13 @@ class Edge
     }
 
     /**
-     * Parameter constructor for unweighted graphs.
-     * @param u - one vertex the edge is connected to
-     * @param v - the other vertex it is connected to
-     * @param lbl - the edge label
-     */
-    Edge(Vertex u, Vertex v, string lbl)
-        : source(u), dest(v), distance(0)
-    { 
-    }
-
-    /**
      * Parameter constructor for weighted graphs.
      * @param u - one vertex the edge is connected to
      * @param v - the other vertex it is connected to
      * @param d - the distance of the edge
      * @param lbl - the edge label
      */
-    Edge(Vertex u, Vertex v, int d, string lbl)
+    Edge(Vertex u, Vertex v, int d)
         : source(u), dest(v), distance(d)
     { /* nothing */
     }

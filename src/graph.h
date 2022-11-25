@@ -7,11 +7,10 @@
 #pragma once
 
 #include <unordered_map>
-#include <algorithm>
 #include <string>
-#include <cstdlib>
 #include <fstream>
-#include <iostream>
+#include <cmath>
+#include <sstream>
 #include <vector>
 
 #include "edge.h"
@@ -31,7 +30,7 @@ class Graph {
         /**
          * Constructor taking in the file containing all airports and file containing all flights.
          */
-        Graph(string airportsFile, string flightsFile);
+        Graph(string airportFileName, string routeFileName);
 
         /**
          * Gets all adjacent vertices to the parameter vertex.
@@ -87,7 +86,7 @@ class Graph {
          * @param destination - the other vertex the edge is connected to
          * @return whether inserting the edge was successful
          */
-        bool insertEdge(Vertex source, Vertex destination);
+        bool insertEdge(Vertex source, Vertex destination, double weight);
 
         /**
          * Sets the weight of the edge between two vertices.
@@ -120,5 +119,11 @@ class Graph {
          *  in the event of an error
          */
         bool assertEdgeExists(Vertex source, Vertex destination) const;
+
+        vector<string> split(string word, char del);
+
+        double haversine(double latitude1, double longitude1, double latitude2, double longitude2);
+
+        const double RADIUS = 6371; //Mean radius of the Earth in KM
 
 };
