@@ -1,5 +1,4 @@
 #include "graph.h"
-#include <iostream>
 
 Graph::Graph(string airportFileName, string routeFileName) {
     //Parse the data
@@ -19,23 +18,36 @@ Graph::Graph(string airportFileName, string routeFileName) {
         if(source != "\"OurAirports\"" or type != "\"airport\"") continue;
         string IATA = info[4];
         insertVertex(IATA);
-        try {
-            double latitude = stod(info[6]);
-            double longitude = stod(info[7]);
-            std::cout << latitude << longitude << std::endl;
-            if(coordinates.find(IATA) == coordinates.end()) //This Airport has not been saved in our hastable yet
-                coordinates[IATA] = {latitude, longitude};
-        } catch (...) {
-            // std::cout << info[0] << std::endl;
+        double latitude;
+        double longitude;
+
+        //This is the expected input size with no extraneous commas in the aiport name
+        if(info.size() == 14) {
+            latitude = stod(info[6]);
+            longitude = stod(info[7]);
+        } else {
+            //This deals with the case that there is an extra comma in the airport name, causing an extra entry
+            //in the input vector.
+            latitude = stod(info[7]);
+            longitude = stod(info[8]);
         }
+
+        if(coordinates.find(IATA) == coordinates.end()) //This Airport has not been saved in our hastable yet
+                coordinates[IATA] = {latitude, longitude};
     }
 
     while(getline(routeFile, route)) {
         vector<string> info = split(route, ',');
         string source = info[2];
         string destination = info[4];
-        std::pair<double, double> sourceCoords = coordinates[source];
-        std::pair<double, double> destCoords = coordinates[destination];
+
+        //From the airport text file, each IATA code is surrounded with double quotes.
+        //This is not the case with the route file. The two lines below corrects this mistake.
+        string correctedSource = "\"" + source + "\"";
+        string correctedDestination = "\"" + destination + "\"";
+
+        std::pair<double, double> sourceCoords = coordinates[correctedSource];
+        std::pair<double, double> destCoords = coordinates[correctedDestination];
         double distance = haversine(sourceCoords.first, sourceCoords.second, destCoords.first, destCoords.second);
         insertEdge(source, destination, distance);
     }
@@ -155,12 +167,10 @@ vector<string> Graph::split(string word, char del) {
 
 double Graph::haversine(double latitude1, double longitude1, double latitude2, double longitude2) {
     //Convert latitude and longitude to radians
-    // std::cout << latitude1 << longitude1 << latitude2 << longitude2 << std::endl;
     double lat1 = latitude1 * M_PI / 180;
     double lon1 = longitude1 * M_PI / 180;
     double lat2 = latitude2 * M_PI / 180;
     double lon2 = longitude2 * M_PI / 180;
-    // std::cout << lat1 << lon1 << lat2 << lon2 << std::endl;
 
     //Find change in latitude and longitude
     double deltaLat = lat2-lat1;
@@ -170,7 +180,6 @@ double Graph::haversine(double latitude1, double longitude1, double latitude2, d
     double a = sin(deltaLat / 2) * sin(deltaLat / 2) + cos(lat1) * cos(lat2) * sin(deltaLon / 2) * sin(deltaLon / 2);
     double c = 2 * atan2(sqrt(a), sqrt(1-a));
     double d = RADIUS * c;
-    // std::cout << a << c << d << std::endl;
 
     return d;
 }
