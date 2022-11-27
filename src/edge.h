@@ -40,7 +40,7 @@ class Edge
      * @param d - the distance of the edge
      * @param lbl - the edge label
      */
-    Edge(Vertex u, Vertex v, int d)
+    Edge(Vertex u, Vertex v, double d)
         : source(u), dest(v), distance(d)
     { /* nothing */
     }
@@ -85,6 +85,6 @@ class Edge
         return true;
     }
 private:
-    int distance; /**< The edge weight (if in a weighed graph) **/
+    double distance; /**< The edge weight (if in a weighed graph) **/
 
 };
