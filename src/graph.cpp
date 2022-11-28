@@ -80,7 +80,7 @@ bool Graph::edgeExists(Vertex source, Vertex destination) const {
     return assertEdgeExists(source, destination);
 }
 
-int Graph::getEdgeWeight(Vertex source, Vertex destination) const {
+double Graph::getEdgeWeight(Vertex source, Vertex destination) const {
     if(!assertEdgeExists(source, destination)) return -1;
     return adjacency_list[source][destination].getDistance();
 }
@@ -111,7 +111,7 @@ bool Graph::insertEdge(Vertex source, Vertex destination, double weight) {
 
 //Might not even need this tbh, planning on implementing an edge constructor that sets the weight
 //If using this might not need the Edge return. Won't need it most likely.
-Edge Graph::setEdgeWeight(Vertex source, Vertex destination, int weight) {
+Edge Graph::setEdgeWeight(Vertex source, Vertex destination, double weight) {
     if(!edgeExists(source, destination)) return Edge();
 
     //Old edge
@@ -181,7 +181,7 @@ double Graph::haversine(double latitude1, double longitude1, double latitude2, d
     double c = 2 * atan2(sqrt(a), sqrt(1-a));
     double d = RADIUS * c;
 
-    return d;
+    return round(d * 100) / 100; //This rounds the distance to the hundredth km.
 }
 
 

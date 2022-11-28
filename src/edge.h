@@ -67,7 +67,7 @@ class Edge
     /**
      * Gets edge weight.
      */
-    int getDistance() const
+    double getDistance() const
     {
         return this->distance;
     }
