@@ -209,3 +209,59 @@ double Graph::haversine(double latitude1, double longitude1, double latitude2, d
 //         cout << endl;
 //     }
 // }
+
+
+int Graph::shortestPathLength(Vertex source, Vertex destination) {
+    // if the source and destination are the same, the shortest path is 0
+    if (source == destination) {
+        return 0;
+    }
+
+    // distances map stores the distance of each vertex from the source vertex
+    map<Vertex, int> distances;
+
+    // if BFS returns false, then the two airports are not connected
+    if (!BFS(source, destination, adjacency_list.size(), distances)) {
+        return -1;
+    }
+
+    // return the distance
+    return distances[destination];
+}
+
+bool Graph::BFS(Vertex source, Vertex destination, int size, map<Vertex, int> &dist) {
+
+    queue<Vertex> queue;
+
+    map<Vertex, bool> visited;
+
+    for (auto element : adjacency_list) {
+        Vertex curr = element.first;
+        visited[curr] = false;
+        dist[curr] = INT_MAX;
+    }
+
+    visited[source] = true;
+    dist[source] = 0;
+    queue.push(source);
+
+    // standard BFS algorithm:
+    while (!queue.empty()) {
+        Vertex temp = queue.front();
+        queue.pop();
+        for (auto element : adjacency_list[temp]) {
+            Vertex curr = element.first;
+            if (!visited[curr]) {
+                visited[curr] = true;
+                dist[curr] = dist[temp] + 1;
+                queue.push(curr);
+
+                // stop BFS algorithm when we arrive at destination.
+                if (curr == destination) {
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
+}
