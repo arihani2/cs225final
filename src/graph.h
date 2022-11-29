@@ -126,4 +126,6 @@ class Graph {
 
         const double RADIUS = 6371; //Mean radius of the Earth in KM
 
+        void clean(vector<Vertex>& vec);
+
 };
