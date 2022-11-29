@@ -85,6 +85,7 @@ TEST_CASE("insertEdge3", "[weight=1]" "[insertEdge]") {
     REQUIRE(graph.edgeExists("LED", "TPA"));
     REQUIRE(graph.edgeExists("TPA", "LED"));
 }
+
 //getAdjacent
 TEST_CASE("getAdjacent1", "[weight=1]" "[getAdjacent]") {
     vector<Vertex> adj = graph.getAdjacent("ORD");
