@@ -33,11 +33,11 @@ TEST_CASE("vertexExists5", "[weight=1]" "[vertexExists]") {
 }
 
 TEST_CASE("getEdgeWeight1", "[weight=1]" "[getEdgeWeight]") {
-    REQUIRE(graph.getEdgeWeight("ORD", "DEC") == 251);
+    REQUIRE((graph.getEdgeWeight("ORD", "DEC") <= 252 and graph.getEdgeWeight("ORD", "DEC") >= 250));
 }
 
 TEST_CASE("getEdgeWeight2", "[weight=1]" "[getEdgeWeight]") {
-    REQUIRE(graph.getEdgeWeight("VCE", "CGN") == 709);
+    REQUIRE((graph.getEdgeWeight("VCE", "CGN") <= 710 and graph.getEdgeWeight("VCE", "CGN") >= 708));
 }
 
 TEST_CASE("getEdgeWeight3", "[weight=1]" "[getEdgeWeight]") {
@@ -70,22 +70,25 @@ TEST_CASE("insertVertex2", "[weight=1]" "[insertVertex]") {
 
 //Insert Edge
 TEST_CASE("insertEdge1", "[weight=1]" "[insertEdge]") {
-    REQUIRE(graph.insertEdge("LOL", "POO", 100));
+    REQUIRE(!(graph.insertEdge("ZZZ", "ZZY", 100)));
 }
 
 TEST_CASE("insertEdge2", "[weight=1]" "[insertEdge]") {
     int weight = graph.getEdgeWeight("ORD", "ANC");
     REQUIRE(!(graph.insertEdge("ORD", "ANC", weight)));
+    REQUIRE(graph.edgeExists("ORD", "ANC"));
+    REQUIRE(graph.edgeExists("ANC", "ORD"));
 }
 
+TEST_CASE("insertEdge3", "[weight=1]" "[insertEdge]") {
+    REQUIRE(graph.insertEdge("LED", "TPA", 1000));
+    REQUIRE(graph.edgeExists("LED", "TPA"));
+    REQUIRE(graph.edgeExists("TPA", "LED"));
+}
 //getAdjacent
 TEST_CASE("getAdjacent1", "[weight=1]" "[getAdjacent]") {
     vector<Vertex> adj = graph.getAdjacent("ORD");
     for (unsigned i = 0; i < adj.size(); i++) {
-        if (graph.getEdgeWeight("ORD", adj[i]) == -1) {
-            REQUIRE(graph.getEdgeWeight(adj[i], "ORD") != -1); 
-        } else {
-            REQUIRE(graph.getEdgeWeight("ORD", adj[i]) != -1);
-        }
+        REQUIRE(graph.getEdgeWeight("ORD", adj[i]) != -1);
     }
 }
