@@ -11,7 +11,11 @@
 #include <fstream>
 #include <cmath>
 #include <sstream>
+#include <stack>
+#include <queue>
 #include <vector>
+#include <bits/stdc++.h>
+
 
 #include "edge.h"
 
@@ -97,11 +101,13 @@ class Graph {
          *         - if not, return InvalidEdge
          */
         Edge setEdgeWeight(Vertex source, Vertex destination, double weight);
-
+        Vertex calculateCentralAirport();
         void clear();
+        int size();
 
     private:
         mutable unordered_map<Vertex, unordered_map<Vertex, Edge>> adjacency_list;
+        mutable unordered_map<Vertex, double> betweenness_centralities;
 
         /**
          * Returns whether a given vertex exists in the graph.
