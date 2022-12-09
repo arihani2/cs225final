@@ -272,7 +272,7 @@ Vertex Graph::minDistance(unordered_map<Vertex, double> &dist, unordered_map<Ver
     
     for (auto& element : adjacency_list) {
         Vertex curr = element.first;
-        if (seen[curr] == false && dist[curr] < min) {
+        if (seen[curr] == false && dist[curr] <= min) {
             min = dist[curr];
             min_vertex = curr;
         }
@@ -281,22 +281,21 @@ Vertex Graph::minDistance(unordered_map<Vertex, double> &dist, unordered_map<Ver
 }
 
 void Graph::dijkstra(Vertex src, unordered_map<Vertex, double> &dist) {
-    unordered_map<Vertex, double> distances;
-    for (auto& element : adjacency_list) {
-        distances[element.first] = 1000000.0;
+    unordered_map<Vertex, bool> sptSet;
+    for (auto element : adjacency_list) {
+        Vertex curr = element.first;
+        dist[curr] = 1000000.0;
+        sptSet[curr] = false;
     }
-    unordered_map<Vertex, bool> seen;
-    distances[src] = 0;
+    dist[src] = 0;
 
-    for (auto& element : adjacency_list) {
-        Vertex curr = minDistance(distances, seen);
-        seen[curr] = true;
-
-        for (auto& item : adjacency_list[curr]) {
-            Vertex node = item.first;
-            double weight = (item.second).getDistance();
-            if (seen[node] == false && distances[node] > distances[curr] + weight) {
-                distances[node] = distances[curr] + weight;
+    for (unsigned long count = 0; count < adjacency_list.size() - 1; count++) {
+        Vertex u = minDistance(dist, sptSet);
+        sptSet[u] = true;
+        for (auto element : adjacency_list) {
+            Vertex v = element.first;
+            if (sptSet[v] == false && u != v && edgeExists(u, v) && dist[u] != 1000000.0 && dist[u] + getEdgeWeight(u, v) < dist[v]) {
+                dist[v] = dist[u] + getEdgeWeight(u, v);
             }
         }
     }

@@ -130,7 +130,7 @@ class Graph {
          * @brief This function is a helper function for dijkstra algorithm function
          * 
          * @param dist 
-         * @param sptSet 
+         * @param sptSet  
          * @return int 
          */
         Vertex minDistance(unordered_map<Vertex, double> &dist, unordered_map<Vertex, bool> &seen);
