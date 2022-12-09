@@ -267,7 +267,7 @@ bool Graph::BFS(Vertex source, Vertex destination, int size, map<Vertex, int> &d
 }
 
 Vertex Graph::minDistance(unordered_map<Vertex, double> &dist, unordered_map<Vertex, bool> &seen) {
-    double min = 1000000.0;
+    double min = DBL_MAX;
     Vertex min_vertex;
     
     for (auto& element : adjacency_list) {
@@ -282,22 +282,24 @@ Vertex Graph::minDistance(unordered_map<Vertex, double> &dist, unordered_map<Ver
 
 void Graph::dijkstra(Vertex src, unordered_map<Vertex, double> &dist) {
     unordered_map<Vertex, bool> sptSet;
-    for (auto element : adjacency_list) {
+    for (auto& element : adjacency_list) {
         Vertex curr = element.first;
-        dist[curr] = 1000000.0;
+        dist[curr] = DBL_MAX;
         sptSet[curr] = false;
     }
     dist[src] = 0;
 
-    for (unsigned long count = 0; count < adjacency_list.size() - 1; count++) {
+    std::cout << adjacency_list.size() << std::endl;
+    for (size_t count = 0; count < adjacency_list.size() - 1; count++) {
         Vertex u = minDistance(dist, sptSet);
         sptSet[u] = true;
-        for (auto element : adjacency_list) {
+        for (auto& element : adjacency_list) {
             Vertex v = element.first;
-            if (sptSet[v] == false && u != v && edgeExists(u, v) && dist[u] != 1000000.0 && dist[u] + getEdgeWeight(u, v) < dist[v]) {
+            if (sptSet[v] == false && u != v && edgeExists(u, v) && dist[u] != DBL_MAX && dist[u] + getEdgeWeight(u, v) < dist[v]) {
                 dist[v] = dist[u] + getEdgeWeight(u, v);
             }
         }
+        std::cout << count << std::endl;
     }
 }
 
@@ -305,4 +307,12 @@ double Graph::shortestPathLength(Vertex src, Vertex dest) {
     unordered_map<Vertex, double> distances;
     dijkstra(src, distances);
     return distances[dest];
+}
+
+void Graph::tester() {
+    int i = 1;
+    for (auto& vertex : adjacency_list) {
+        std::cout << to_string(i) + " " + vertex.first << std::endl;
+        i++;
+    }
 }

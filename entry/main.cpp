@@ -17,8 +17,10 @@ int main() {
     */
 
    //std::cout << test.minNumConnections("ORD", "LAX") << std::endl;
-   std::cout << test.shortestPathLength("ORD", "SFO") << std::endl;
+   //std::cout << test.shortestPathLength("ORD", "SFO") << std::endl;
    //std::cout << test.shortestPathLength("CMI", "SFO") << std::endl;
+
+   test.tester();
     
     
     

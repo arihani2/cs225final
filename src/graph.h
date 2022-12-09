@@ -144,6 +144,8 @@ class Graph {
 
         double shortestPathLength(Vertex src, Vertex dest);
 
+        void tester();
+
 
        
 
