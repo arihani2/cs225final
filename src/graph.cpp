@@ -10,6 +10,8 @@ Graph::Graph(string airportFileName, string routeFileName) {
 
     //Hash map of airports and their latitude/longitude coordinates for edge weights later
     unordered_map<Vertex, std::pair<double, double>> coordinates;
+    //A list of all vertices to loop through in cleansing stage
+    vector<Vertex> allVertices;
 
     while(getline(airportFile, airport)) {
         vector<string> info = split(airport, ',');
@@ -17,7 +19,11 @@ Graph::Graph(string airportFileName, string routeFileName) {
         string type = info[info.size() - 2];
         if(source != "\"OurAirports\"" or type != "\"airport\"") continue;
         string IATA = info[4];
-        insertVertex(IATA);
+
+        //IATA code is wrapped in double quotes, this gets rid of that for ease
+        string correctedIATA = IATA.substr(1,3);
+        insertVertex(correctedIATA);
+        allVertices.push_back(correctedIATA);
         double latitude;
         double longitude;
 
@@ -32,8 +38,8 @@ Graph::Graph(string airportFileName, string routeFileName) {
             longitude = stod(info[8]);
         }
 
-        if(coordinates.find(IATA) == coordinates.end()) //This Airport has not been saved in our hastable yet
-                coordinates[IATA] = {latitude, longitude};
+        if(coordinates.find(correctedIATA) == coordinates.end()) //This Airport has not been saved in our hastable yet
+                coordinates[correctedIATA] = {latitude, longitude};
     }
 
     while(getline(routeFile, route)) {
@@ -41,15 +47,20 @@ Graph::Graph(string airportFileName, string routeFileName) {
         string source = info[2];
         string destination = info[4];
 
-        //From the airport text file, each IATA code is surrounded with double quotes.
-        //This is not the case with the route file. The two lines below corrects this mistake.
-        string correctedSource = "\"" + source + "\"";
-        string correctedDestination = "\"" + destination + "\"";
-
-        std::pair<double, double> sourceCoords = coordinates[correctedSource];
-        std::pair<double, double> destCoords = coordinates[correctedDestination];
+        std::pair<double, double> sourceCoords = coordinates[source];
+        std::pair<double, double> destCoords = coordinates[destination];
         double distance = haversine(sourceCoords.first, sourceCoords.second, destCoords.first, destCoords.second);
         insertEdge(source, destination, distance);
+    }
+
+    //This does the majority of our data cleansing.
+    clean(allVertices);
+}
+
+void Graph::clean(vector<Vertex>& vec) {
+    for(Vertex airport: vec) {
+        if(edgeExists(airport, airport)) adjacency_list[airport].erase(airport); //Remove self loop
+        if(getAdjacent(airport).empty()) adjacency_list.erase(airport); //Remove airport with no edges
     }
 }
 
@@ -94,16 +105,15 @@ void Graph::insertVertex(Vertex v) {
 }
 
 bool Graph::insertEdge(Vertex source, Vertex destination, double weight) {
+    //Edge already exists
     if(edgeExists(source, destination)) return false;
 
-    //Source vertex does not exist in adjacency list
-    if(!vertexExists(source)) adjacency_list[source] = unordered_map<Vertex, Edge>();
-    //Insert edge
-    adjacency_list[source][destination] = Edge(source, destination, weight);
+    //Data correction step
+    //If the source airport or destination airport is not in our database, do not add the edge.
+    if(!vertexExists(source) or !vertexExists(destination)) return false;
 
-    //Source vertex does not exist in adjacency list
-    if(!vertexExists(destination)) adjacency_list[destination] = unordered_map<Vertex, Edge>();
-    //Insert edge
+    //Insert edges
+    adjacency_list[source][destination] = Edge(source, destination, weight);
     adjacency_list[destination][source] = Edge(source, destination, weight);
     
     return true;
