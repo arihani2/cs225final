@@ -211,7 +211,7 @@ double Graph::haversine(double latitude1, double longitude1, double latitude2, d
 // }
 
 
-int Graph::shortestPathLength(Vertex source, Vertex destination) {
+int Graph::minNumConnections(Vertex source, Vertex destination) {
     // if the source and destination are the same, the shortest path is 0
     if (source == destination) {
         return 0;
@@ -264,4 +264,46 @@ bool Graph::BFS(Vertex source, Vertex destination, int size, map<Vertex, int> &d
         }
     }
     return false;
+}
+
+Vertex Graph::minDistance(unordered_map<Vertex, double> &dist, unordered_map<Vertex, bool> &seen) {
+    double min = 1000000.0;
+    Vertex min_vertex;
+    
+    for (auto& element : adjacency_list) {
+        Vertex curr = element.first;
+        if (seen[curr] == false && dist[curr] < min) {
+            min = dist[curr];
+            min_vertex = curr;
+        }
+    }
+    return min_vertex;
+}
+
+void Graph::dijkstra(Vertex src, unordered_map<Vertex, double> &dist) {
+    unordered_map<Vertex, double> distances;
+    for (auto& element : adjacency_list) {
+        distances[element.first] = 1000000.0;
+    }
+    unordered_map<Vertex, bool> seen;
+    distances[src] = 0;
+
+    for (auto& element : adjacency_list) {
+        Vertex curr = minDistance(distances, seen);
+        seen[curr] = true;
+
+        for (auto& item : adjacency_list[curr]) {
+            Vertex node = item.first;
+            double weight = (item.second).getDistance();
+            if (seen[node] == false && distances[node] > distances[curr] + weight) {
+                distances[node] = distances[curr] + weight;
+            }
+        }
+    }
+}
+
+double Graph::shortestPathLength(Vertex src, Vertex dest) {
+    unordered_map<Vertex, double> distances;
+    dijkstra(src, distances);
+    return distances[dest];
 }

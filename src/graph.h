@@ -108,14 +108,13 @@ class Graph {
 
         /**
          * @brief This function returns the shortest path length from a source airport to a destination airport.
-         * For example, a direct flight will have a shortest path length equal to 1.
-         * The function will return 0 if the source and destination are the same airport.
-         * The function will return -1 if the source and destination airports are not connected. 
+         * For example, a direct flight will have a shortest path length equal to 0.
+         * The function will return -1 if the source and destination are the same airport.
          * @param source 
          * @param destination 
          * @return int 
          */
-        int shortestPathLength(Vertex source, Vertex destination);
+        int minNumConnections(Vertex source, Vertex destination);
 
         /**
          * @brief This function is a BFS traversal algorithm helper function that stores each vertices' distance from source. 
@@ -126,6 +125,25 @@ class Graph {
          * @param dist 
          */
         bool BFS(Vertex source, Vertex destination, int size, map<Vertex, int> &dist);
+
+        /**
+         * @brief This function is a helper function for dijkstra algorithm function
+         * 
+         * @param dist 
+         * @param sptSet 
+         * @return int 
+         */
+        Vertex minDistance(unordered_map<Vertex, double> &dist, unordered_map<Vertex, bool> &seen);
+
+        /**
+         * @brief Dijkstra algorithm to be used for function that calculates the shortest path length from airport A to airport B
+         * 
+         * @param src 
+         */
+        void dijkstra(Vertex src, unordered_map<Vertex, double> &dist);
+
+        double shortestPathLength(Vertex src, Vertex dest);
+
 
        
 
