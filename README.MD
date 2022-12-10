@@ -3,9 +3,9 @@
 <p align="center">
   <a href="#presentation-video">Presentation Video</a> •
   <a href="#data">Data</a> •
-  <a href="#repo-structure">Github Structure</a> •
+  <a href="#github-structure">Github Structure</a> •
   <a href="#running-instructions">Running Instructions</a> •
-  <a href="#team">Team Members</a>
+  <a href="#team-members">Team Members</a>
 </p>
 
 ## [Presentation Video]()
@@ -43,14 +43,14 @@ First, we need to create a build directory. Make sure you our in our project's m
 To use our program, run `make` then `./main` in the build directory.
 
 1. BFS: 
-   - Input: 
-   - Output: 
+   - Input: Airport Graph
+   - Output: Minimum number of connections from source to destination airport
 2. Dijkstra's:
-   - Input: 
-   - Output: 
-3. Modified Floyd Marshall's:
-   - Input: 
-   - Output: 
+   - Input: Airport Graph
+   - Output: Shortest flight distance from source to destination airport
+3. Modified Floyd Marshall's (Brandes algorithm):
+   - Input: Airport Graph
+   - Output: The betweenness centrality values for all airports
 
 ### Tests
 
