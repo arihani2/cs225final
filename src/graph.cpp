@@ -299,7 +299,6 @@ void Graph::dijkstra(Vertex src, unordered_map<Vertex, double> &dist) {
     }
     dist[src] = 0;
 
-    std::cout << adjacency_list.size() << std::endl;
     for (size_t count = 0; count < adjacency_list.size() - 1; count++) {
         Vertex u = minDistance(dist, sptSet);
         sptSet[u] = true;
@@ -309,7 +308,6 @@ void Graph::dijkstra(Vertex src, unordered_map<Vertex, double> &dist) {
                 dist[v] = dist[u] + getEdgeWeight(u, v);
             }
         }
-        std::cout << count << std::endl;
     }
 }
 
