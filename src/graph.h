@@ -14,8 +14,10 @@
 #include <stack>
 #include <queue>
 #include <vector>
-#include <bits/stdc++.h>
 
+#include <map>
+#include <queue>
+#include <bits/stdc++.h>
 
 #include "edge.h"
 
@@ -23,6 +25,9 @@ using std::vector;
 using std::string;
 using std::to_string;
 using std::unordered_map;
+using std::map;
+
+using namespace std;
 
 
 /**
@@ -104,6 +109,55 @@ class Graph {
         Vertex calculateCentralAirport();
         void clear();
         int size();
+
+        /**
+         * @brief This function returns the shortest path length from a source airport to a destination airport.
+         * For example, a direct flight will have a shortest path length equal to 0.
+         * The function will return -1 if the source and destination are the same airport.
+         * @param source 
+         * @param destination 
+         * @return int 
+         */
+        int minNumConnections(Vertex source, Vertex destination);
+
+        /**
+         * @brief This function is a BFS traversal algorithm helper function that stores each vertices' distance from source. 
+         * The function will return false if the source and destination airports are not connected.
+         * @param source 
+         * @param destination 
+         * @param size 
+         * @param dist 
+         */
+        bool BFS(Vertex source, Vertex destination, int size, map<Vertex, int> &dist);
+
+        /**
+         * @brief This function is a helper function for dijkstra algorithm function
+         * 
+         * @param dist 
+         * @param sptSet  
+         * @return int 
+         */
+        Vertex minDistance(unordered_map<Vertex, double> &dist, unordered_map<Vertex, bool> &seen);
+
+        /**
+         * @brief Dijkstra algorithm to be used for function that calculates the shortest path length from airport A to airport B
+         * 
+         * @param src 
+         */
+        void dijkstra(Vertex src, unordered_map<Vertex, double> &dist);
+
+        /**
+         * @brief This functions returns a map with the shortest distance from source airport to every other airport in the world
+         * 
+         * @param src 
+         * @return unordered_map<Vertex, double> 
+         */
+        unordered_map<Vertex, double> Graph::shortestPathLength(Vertex src);
+
+
+
+
+       
 
     private:
         mutable unordered_map<Vertex, unordered_map<Vertex, Edge>> adjacency_list;

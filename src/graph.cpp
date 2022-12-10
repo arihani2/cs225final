@@ -345,3 +345,102 @@ int Graph::size()
 //         cout << endl;
 //     }
 // }
+
+
+int Graph::minNumConnections(Vertex source, Vertex destination) {
+    // if the source and destination are the same, the shortest path is 0
+    if (source == destination) {
+        return 0;
+    }
+
+    // distances map stores the distance of each vertex from the source vertex
+    map<Vertex, int> distances;
+
+    // if BFS returns false, then the two airports are not connected
+    if (!BFS(source, destination, adjacency_list.size(), distances)) {
+        return -1;
+    }
+
+    // return the distance
+    return distances[destination];
+}
+
+bool Graph::BFS(Vertex source, Vertex destination, int size, map<Vertex, int> &dist) {
+
+    queue<Vertex> queue;
+
+    map<Vertex, bool> visited;
+
+    for (auto element : adjacency_list) {
+        Vertex curr = element.first;
+        visited[curr] = false;
+        dist[curr] = INT_MAX;
+    }
+
+    visited[source] = true;
+    dist[source] = 0;
+    queue.push(source);
+
+    // standard BFS algorithm:
+    while (!queue.empty()) {
+        Vertex temp = queue.front();
+        queue.pop();
+        for (auto element : adjacency_list[temp]) {
+            Vertex curr = element.first;
+            if (!visited[curr]) {
+                visited[curr] = true;
+                dist[curr] = dist[temp] + 1;
+                queue.push(curr);
+
+                // stop BFS algorithm when we arrive at destination.
+                if (curr == destination) {
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
+}
+
+Vertex Graph::minDistance(unordered_map<Vertex, double> &dist, unordered_map<Vertex, bool> &seen) {
+    double min = DBL_MAX;
+    Vertex min_vertex;
+    
+    for (auto& element : adjacency_list) {
+        Vertex curr = element.first;
+        if (seen[curr] == false && dist[curr] <= min) {
+            min = dist[curr];
+            min_vertex = curr;
+        }
+    }
+    return min_vertex;
+}
+
+void Graph::dijkstra(Vertex src, unordered_map<Vertex, double> &dist) {
+    unordered_map<Vertex, bool> sptSet;
+    for (auto& element : adjacency_list) {
+        Vertex curr = element.first;
+        dist[curr] = DBL_MAX;
+        sptSet[curr] = false;
+    }
+    dist[src] = 0;
+
+    std::cout << adjacency_list.size() << std::endl;
+    for (size_t count = 0; count < adjacency_list.size() - 1; count++) {
+        Vertex u = minDistance(dist, sptSet);
+        sptSet[u] = true;
+        for (auto& element : adjacency_list) {
+            Vertex v = element.first;
+            if (sptSet[v] == false && u != v && edgeExists(u, v) && dist[u] != DBL_MAX && dist[u] + getEdgeWeight(u, v) < dist[v]) {
+                dist[v] = dist[u] + getEdgeWeight(u, v);
+            }
+        }
+        std::cout << count << std::endl;
+    }
+}
+
+unordered_map<Vertex, double> Graph::shortestPathLength(Vertex src) {
+    unordered_map<Vertex, double> distances;
+    dijkstra(src, distances);
+    return distances;
+}
