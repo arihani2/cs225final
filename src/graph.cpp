@@ -313,16 +313,8 @@ void Graph::dijkstra(Vertex src, unordered_map<Vertex, double> &dist) {
     }
 }
 
-double Graph::shortestPathLength(Vertex src, Vertex dest) {
+unordered_map<Vertex, double> Graph::shortestPathLength(Vertex src) {
     unordered_map<Vertex, double> distances;
     dijkstra(src, distances);
-    return distances[dest];
-}
-
-void Graph::tester() {
-    int i = 1;
-    for (auto& vertex : adjacency_list) {
-        std::cout << to_string(i) + " " + vertex.first << std::endl;
-        i++;
-    }
+    return distances;
 }

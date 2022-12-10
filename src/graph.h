@@ -142,9 +142,15 @@ class Graph {
          */
         void dijkstra(Vertex src, unordered_map<Vertex, double> &dist);
 
-        double shortestPathLength(Vertex src, Vertex dest);
+        /**
+         * @brief This functions returns a map with the shortest distance from source airport to every other airport in the world
+         * 
+         * @param src 
+         * @return unordered_map<Vertex, double> 
+         */
+        unordered_map<Vertex, double> Graph::shortestPathLength(Vertex src);
 
-        void tester();
+
 
 
        
