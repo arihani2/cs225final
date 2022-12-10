@@ -3,9 +3,9 @@
 <p align="center">
   <a href="#presentation-video">Presentation Video</a> •
   <a href="#data">Data</a> •
-  <a href="#repo-structure">Github Structure</a> •
+  <a href="#github-structure">Github Structure</a> •
   <a href="#running-instructions">Running Instructions</a> •
-  <a href="#team">Team Members</a>
+  <a href="#team-members">Team Members</a>
 </p>
 
 ## [Presentation Video]()
