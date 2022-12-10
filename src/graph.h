@@ -11,7 +11,10 @@
 #include <fstream>
 #include <cmath>
 #include <sstream>
+#include <stack>
+#include <queue>
 #include <vector>
+
 #include <map>
 #include <queue>
 #include <bits/stdc++.h>
@@ -103,8 +106,9 @@ class Graph {
          *         - if not, return InvalidEdge
          */
         Edge setEdgeWeight(Vertex source, Vertex destination, double weight);
-
+        Vertex calculateCentralAirport();
         void clear();
+        int size();
 
         /**
          * @brief This function returns the shortest path length from a source airport to a destination airport.
@@ -157,6 +161,7 @@ class Graph {
 
     private:
         mutable unordered_map<Vertex, unordered_map<Vertex, Edge>> adjacency_list;
+        mutable unordered_map<Vertex, double> betweenness_centralities;
 
         /**
          * Returns whether a given vertex exists in the graph.
