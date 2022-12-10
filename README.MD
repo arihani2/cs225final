@@ -14,7 +14,7 @@
 
 We are using the [OpenFlights Airports Database](https://openflights.org/data.html) data and focusing on the following two files:
 
-- [OpenFlights airport dataset)](airports.dat)
+- [OpenFlights airport dataset](airports.dat)
 - [OpenFlights airport routes dataset](routes.dat)
 
 ## Github Structure

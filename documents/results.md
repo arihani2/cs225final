@@ -8,11 +8,7 @@ To test Dijkstra's algorithm, we wrote multiple test cases for aiport distances 
 ### Betweenness Centrality/Brande's Algorithm
 Our Brande's Algorithm implementation is a modified version of our originally planned Floyd-Warshall's Algorithm. It takes in no inputs, and outputs the airport that sees the most connecting flights from all shortest paths. The airport that we found had the most connecting flights was Governor André Franco Montoro International Airport (IATA Code GRU) based in Guarulhos, Brazil.
 
-To ensure that our algorithm was correct, 
-
-Our Welsh-Powell algorithm takes in a graph and outputs the upper bound on the colors needed to color the given graph. Upon running it on our dataset of California, we discovered that the maximum number of colors needed is three. This finding is aligned with our expectations, as after looking at our rendering of California, we saw that the average number of degrees each node has is 1-2. On top of that, our dataset is divided into many different connected components, which would further minimize the number of colors needed.
-
-To ensure that our algorithm is correct, we created tests using smaller datasets whose results we could manually confirm. Aside from testing general behavior, one of our tests also ensured that the algorithm works with disjointed data.
+To ensure that our algorithm is correct, we created tests using airports that we know the betweenness centrality of and confirmed that the algorithm outputs a correct result for that airport using a helper function.
 
 ### Breadth-First Search
 Our breadth-first search algorithm takes in a starting node and an ending node and outputs the number of connecting flights between the two aiports, ignoring weight (a return of 0 means direct flight). Since the dataset is so massive and that since there can exists many paths of the same length between any two airports, we only output the number of connecting flights and not the actual path between the starting and ending nodes.

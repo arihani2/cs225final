@@ -230,6 +230,12 @@ double Graph::haversine(double latitude1, double longitude1, double latitude2, d
     return round(d * 100) / 100; // This rounds the distance to the hundredth km.
 }
 
+double Graph::getBetweenness(Vertex airport)
+{
+    return betweenness_centralities[airport];
+}
+
+
 Vertex Graph::calculateCentralAirport()
 {
     for (auto &pair : adjacency_list)
@@ -318,31 +324,6 @@ int Graph::size()
 {
     return adjacency_list.size();
 }
-
-/**
- * Prints the graph to stdout.
- */
-// void Graph::print() const
-// {
-//     for (auto it = adjacency_list.begin(); it != adjacency_list.end(); ++it)
-//     {
-//         cout << it->first << endl;
-//         for (auto it2 = it->second.begin(); it2 != it->second.end(); ++it2)
-//         {
-//             std::stringstream ss;
-//             ss << it2->first;
-//             string vertexColumn = "    => " + ss.str();
-//             vertexColumn += " " ;
-//             cout << std::left << std::setw(26) << vertexColumn;
-//             string edgeColumn = "edge label = \"" + it2->second.getLabel()+ "\"";
-//             cout << std::left << std::setw(26) << edgeColumn;
-//             if (weighted)
-//                 cout << "weight = " << it2->second.getWeight();
-//             cout << endl;
-//         }
-//         cout << endl;
-//     }
-// }
 
 
 int Graph::minNumConnections(Vertex source, Vertex destination) {

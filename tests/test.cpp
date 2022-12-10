@@ -155,3 +155,13 @@ TEST_CASE("Dijkstra1", "[Dijkstra]") {
     REQUIRE(distances["ICN"] >= 9646);
     REQUIRE(distances["ICN"] <= 9648);
 }
+
+TEST_CASE("getBetweenness")
+{
+    graph.calculateCentralAirport();
+    REQUIRE(graph.getBetweenness("CMI") < 0.01);
+    REQUIRE(graph.getBetweenness("HHH") < 0.01);
+    REQUIRE(graph.getBetweenness("YWL") < 0.01);
+    REQUIRE(graph.getBetweenness("SNU") - double(2081)/double(90) < 0.01);
+    REQUIRE(graph.getBetweenness("CCC") - 244.007 < 0.01);
+}
