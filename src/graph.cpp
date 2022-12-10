@@ -362,7 +362,7 @@ int Graph::minNumConnections(Vertex source, Vertex destination) {
     }
 
     // return the distance
-    return distances[destination];
+    return distances[destination] - 1;
 }
 
 bool Graph::BFS(Vertex source, Vertex destination, int size, map<Vertex, int> &dist) {

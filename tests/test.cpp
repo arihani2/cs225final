@@ -7,6 +7,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <unordered_map>
 
 using namespace std;
 
@@ -118,4 +119,33 @@ TEST_CASE("getAdjacent1", "[weight=1]" "[getAdjacent]") {
 
 TEST_CASE("getAdjacent2" , "[weight=1]" "[getAdjacent]") {
      REQUIRE(graph.getAdjacent("ZZZ").size() == 0);
-}   
+}
+
+//Algorithm Testing
+//BFS
+TEST_CASE("BFS1", "[BFS]") {
+    REQUIRE(graph.minNumConnections("ORD", "LAX")== 0); //Chicago to LA --> 1
+}
+
+TEST_CASE("BFS2", "[BFS]") {
+    REQUIRE(graph.minNumConnections("CMI", "LAX")== 1); //Champaign to LA --> 2
+}
+
+TEST_CASE("BFS3", "[BFS]") {
+    REQUIRE(graph.minNumConnections("SFO", "LAX")== 0); // San Fran to LA --> 1
+}
+
+TEST_CASE("BFS4", "[BFS]") {
+    REQUIRE(graph.minNumConnections("CMI", "ICN")== 1); // Champaign to Seoul --> 2
+}
+
+TEST_CASE("BFS5", "[BFS]") {
+    REQUIRE(graph.minNumConnections("CMI", "GMP")== 2); // Champaign to Gimpo (regional korean airport) --> 3
+}
+
+//Dijkstras Testing
+TEST_CASE("Dijkstra1", "[Dijkstra]") {
+    unordered_map<Vertex, double> distances = graph.shortestPathLength("CMI");
+    REQUIRE(distances["ORD"] >= 217 && distances["ORD"] <= 219);
+    REQUIRE(distances["ORD"] >= 3188 && distances["SFO"] <= 3190);
+}
