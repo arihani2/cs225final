@@ -304,7 +304,6 @@ Vertex Graph::calculateCentralAirport()
     Vertex best = "DEGAS";
     for (auto &pair : betweenness_centralities)
     {
-        std::cout << pair.first + " " + to_string(pair.second) << std::endl;
         if (pair.second > max)
         {
             max = pair.second;
@@ -312,7 +311,6 @@ Vertex Graph::calculateCentralAirport()
         }
     }
 
-    std::cout << "MAX: " + to_string(max)<<std::endl;
     return best;
 }
 
@@ -425,7 +423,6 @@ void Graph::dijkstra(Vertex src, unordered_map<Vertex, double> &dist) {
     }
     dist[src] = 0;
 
-    std::cout << adjacency_list.size() << std::endl;
     for (size_t count = 0; count < adjacency_list.size() - 1; count++) {
         Vertex u = minDistance(dist, sptSet);
         sptSet[u] = true;
@@ -435,7 +432,6 @@ void Graph::dijkstra(Vertex src, unordered_map<Vertex, double> &dist) {
                 dist[v] = dist[u] + getEdgeWeight(u, v);
             }
         }
-        std::cout << count << std::endl;
     }
 }
 

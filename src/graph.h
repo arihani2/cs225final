@@ -152,7 +152,7 @@ class Graph {
          * @param src 
          * @return unordered_map<Vertex, double> 
          */
-        unordered_map<Vertex, double> Graph::shortestPathLength(Vertex src);
+        unordered_map<Vertex, double> shortestPathLength(Vertex src);
 
 
 
