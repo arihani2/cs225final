@@ -1,48 +1,55 @@
 #include "graph.h"
 
-Graph::Graph(string airportFileName, string routeFileName) {
-    //Parse the data
+Graph::Graph(string airportFileName, string routeFileName)
+{
+    // Parse the data
     string airport;
     string route;
 
     std::ifstream airportFile(airportFileName);
     std::ifstream routeFile(routeFileName);
 
-    //Hash map of airports and their latitude/longitude coordinates for edge weights later
+    // Hash map of airports and their latitude/longitude coordinates for edge weights later
     unordered_map<Vertex, std::pair<double, double>> coordinates;
-    //A list of all vertices to loop through in cleansing stage
+    // A list of all vertices to loop through in cleansing stage
     vector<Vertex> allVertices;
 
-    while(getline(airportFile, airport)) {
+    while (getline(airportFile, airport))
+    {
         vector<string> info = split(airport, ',');
         string source = info.back();
         string type = info[info.size() - 2];
-        if(source != "\"OurAirports\"" or type != "\"airport\"") continue;
+        if (source != "\"OurAirports\"" or type != "\"airport\"")
+            continue;
         string IATA = info[4];
 
-        //IATA code is wrapped in double quotes, this gets rid of that for ease
-        string correctedIATA = IATA.substr(1,3);
+        // IATA code is wrapped in double quotes, this gets rid of that for ease
+        string correctedIATA = IATA.substr(1, 3);
         insertVertex(correctedIATA);
         allVertices.push_back(correctedIATA);
         double latitude;
         double longitude;
 
-        //This is the expected input size with no extraneous commas in the aiport name
-        if(info.size() == 14) {
+        // This is the expected input size with no extraneous commas in the aiport name
+        if (info.size() == 14)
+        {
             latitude = stod(info[6]);
             longitude = stod(info[7]);
-        } else {
-            //This deals with the case that there is an extra comma in the airport name, causing an extra entry
-            //in the input vector.
+        }
+        else
+        {
+            // This deals with the case that there is an extra comma in the airport name, causing an extra entry
+            // in the input vector.
             latitude = stod(info[7]);
             longitude = stod(info[8]);
         }
 
-        if(coordinates.find(correctedIATA) == coordinates.end()) //This Airport has not been saved in our hastable yet
-                coordinates[correctedIATA] = {latitude, longitude};
+        if (coordinates.find(correctedIATA) == coordinates.end()) // This Airport has not been saved in our hastable yet
+            coordinates[correctedIATA] = {latitude, longitude};
     }
 
-    while(getline(routeFile, route)) {
+    while (getline(routeFile, route))
+    {
         vector<string> info = split(route, ',');
         string source = info[2];
         string destination = info[4];
@@ -53,121 +60,149 @@ Graph::Graph(string airportFileName, string routeFileName) {
         insertEdge(source, destination, distance);
     }
 
-    //This does the majority of our data cleansing.
+    // This does the majority of our data cleansing.
     clean(allVertices);
 }
 
-void Graph::clean(vector<Vertex>& vec) {
-    for(Vertex airport: vec) {
-        if(edgeExists(airport, airport)) adjacency_list[airport].erase(airport); //Remove self loop
-        if(getAdjacent(airport).empty()) adjacency_list.erase(airport); //Remove airport with no edges
+void Graph::clean(vector<Vertex> &vec)
+{
+    for (Vertex airport : vec)
+    {
+        if (edgeExists(airport, airport))
+            adjacency_list[airport].erase(airport); // Remove self loop
+        if (getAdjacent(airport).empty())
+            adjacency_list.erase(airport); // Remove airport with no edges
     }
 }
 
-vector<Vertex> Graph::getAdjacent(Vertex source) const {
+vector<Vertex> Graph::getAdjacent(Vertex source) const
+{
     auto lookup = adjacency_list.find(source);
 
-    if(lookup == adjacency_list.end()) return vector<Vertex>();
-    else {
+    if (lookup == adjacency_list.end())
+        return vector<Vertex>();
+    else
+    {
         vector<Vertex> vertex_list;
-        unordered_map <Vertex, Edge>& map = adjacency_list[source];
-        for (auto it = map.begin(); it != map.end(); it++) {
+        unordered_map<Vertex, Edge> &map = adjacency_list[source];
+        for (auto it = map.begin(); it != map.end(); it++)
+        {
             vertex_list.push_back(it->first);
         }
         return vertex_list;
     }
 }
 
-Edge Graph::getEdge(Vertex source , Vertex destination) const {
-    if(!assertEdgeExists(source, destination)) return Edge();
+Edge Graph::getEdge(Vertex source, Vertex destination) const
+{
+    if (!assertEdgeExists(source, destination))
+        return Edge();
     return adjacency_list[source][destination];
 }
 
-bool Graph::vertexExists(Vertex v) const {
+bool Graph::vertexExists(Vertex v) const
+{
     return assertVertexExists(v);
 }
 
-bool Graph::edgeExists(Vertex source, Vertex destination) const {
+bool Graph::edgeExists(Vertex source, Vertex destination) const
+{
     return assertEdgeExists(source, destination);
 }
 
-double Graph::getEdgeWeight(Vertex source, Vertex destination) const {
-    if(!assertEdgeExists(source, destination)) return -1;
+double Graph::getEdgeWeight(Vertex source, Vertex destination) const
+{
+    if (!assertEdgeExists(source, destination))
+        return -1;
     return adjacency_list[source][destination].getDistance();
 }
 
-void Graph::insertVertex(Vertex v) {
+void Graph::insertVertex(Vertex v)
+{
     // will overwrite if old stuff was there
     // removeVertex(v);
-    if(vertexExists(v)) return;
+    if (vertexExists(v))
+        return;
     // make it empty again
     adjacency_list[v] = unordered_map<Vertex, Edge>();
 }
 
-bool Graph::insertEdge(Vertex source, Vertex destination, double weight) {
-    //Edge already exists
-    if(edgeExists(source, destination)) return false;
+bool Graph::insertEdge(Vertex source, Vertex destination, double weight)
+{
+    // Edge already exists
+    if (edgeExists(source, destination))
+        return false;
 
-    //Data correction step
-    //If the source airport or destination airport is not in our database, do not add the edge.
-    if(!vertexExists(source) or !vertexExists(destination)) return false;
+    // Data correction step
+    // If the source airport or destination airport is not in our database, do not add the edge.
+    if (!vertexExists(source) or !vertexExists(destination))
+        return false;
 
-    //Insert edges
+    // Insert edges
     adjacency_list[source][destination] = Edge(source, destination, weight);
     adjacency_list[destination][source] = Edge(source, destination, weight);
-    
+
     return true;
 }
 
-//Might not even need this tbh, planning on implementing an edge constructor that sets the weight
-//If using this might not need the Edge return. Won't need it most likely.
-Edge Graph::setEdgeWeight(Vertex source, Vertex destination, double weight) {
-    if(!edgeExists(source, destination)) return Edge();
+// Might not even need this tbh, planning on implementing an edge constructor that sets the weight
+// If using this might not need the Edge return. Won't need it most likely.
+Edge Graph::setEdgeWeight(Vertex source, Vertex destination, double weight)
+{
+    if (!edgeExists(source, destination))
+        return Edge();
 
-    //Old edge
+    // Old edge
     Edge e = adjacency_list[source][destination];
-    if(e.getDistance() == weight) return Edge(); //If original edge weight is the same as the new
+    if (e.getDistance() == weight)
+        return Edge(); // If original edge weight is the same as the new
 
-    //New edge src->dest
+    // New edge src->dest
     Edge new_edge(source, destination, weight);
     adjacency_list[source][destination] = new_edge;
 
-    //New edge dest -> src
-    Edge new_edge_reverse(destination,source, weight);
+    // New edge dest -> src
+    Edge new_edge_reverse(destination, source, weight);
     adjacency_list[destination][source] = new_edge_reverse;
 
     return new_edge;
 }
 
-
-bool Graph::assertVertexExists(Vertex v) const {
+bool Graph::assertVertexExists(Vertex v) const
+{
     return adjacency_list.find(v) != adjacency_list.end();
 }
 
-bool Graph::assertEdgeExists(Vertex source, Vertex destination) const {
-    //The source vertex does not exist in the adjacency list
+bool Graph::assertEdgeExists(Vertex source, Vertex destination) const
+{
+    // The source vertex does not exist in the adjacency list
     auto findSource = adjacency_list.find(source);
-    if(findSource == adjacency_list.end()) return false;
+    if (findSource == adjacency_list.end())
+        return false;
 
-    //The destination vertex does not exist in the edge list of the source vertex
-    unordered_map<Vertex, Edge>& edgeList = adjacency_list[source];
+    // The destination vertex does not exist in the edge list of the source vertex
+    unordered_map<Vertex, Edge> &edgeList = adjacency_list[source];
     auto findDestination = edgeList.find(destination);
-    if(findDestination == edgeList.end()) return false;
+    if (findDestination == edgeList.end())
+        return false;
 
-    //Edge between the two vertices exists
+    // Edge between the two vertices exists
     return true;
 }
 
-void Graph::clear() {
+void Graph::clear()
+{
     adjacency_list.clear();
 }
 
-vector<string> Graph::split(string word, char del) {
+vector<string> Graph::split(string word, char del)
+{
     vector<string> to_return;
 
     std::stringstream ss(word);
     string to_add;
-    while (!ss.eof()) {
+    while (!ss.eof())
+    {
         getline(ss, to_add, del);
         to_return.push_back(to_add);
     }
@@ -175,38 +210,127 @@ vector<string> Graph::split(string word, char del) {
     return to_return;
 }
 
-double Graph::haversine(double latitude1, double longitude1, double latitude2, double longitude2) {
-    //Convert latitude and longitude to radians
+double Graph::haversine(double latitude1, double longitude1, double latitude2, double longitude2)
+{
+    // Convert latitude and longitude to radians
     double lat1 = latitude1 * M_PI / 180;
     double lon1 = longitude1 * M_PI / 180;
     double lat2 = latitude2 * M_PI / 180;
     double lon2 = longitude2 * M_PI / 180;
 
-    //Find change in latitude and longitude
-    double deltaLat = lat2-lat1;
-    double deltaLon = lon2-lon1;
+    // Find change in latitude and longitude
+    double deltaLat = lat2 - lat1;
+    double deltaLon = lon2 - lon1;
 
-    //Apply formula
+    // Apply formula
     double a = sin(deltaLat / 2) * sin(deltaLat / 2) + cos(lat1) * cos(lat2) * sin(deltaLon / 2) * sin(deltaLon / 2);
-    double c = 2 * atan2(sqrt(a), sqrt(1-a));
+    double c = 2 * atan2(sqrt(a), sqrt(1 - a));
     double d = RADIUS * c;
 
-    return round(d * 100) / 100; //This rounds the distance to the hundredth km.
+    return round(d * 100) / 100; // This rounds the distance to the hundredth km.
 }
 
+Vertex Graph::calculateCentralAirport()
+{
+    for (auto &pair : adjacency_list)
+        betweenness_centralities[pair.first] = 0.0;
+
+    // creating lists for BFS traversal
+    unordered_map<Vertex, vector<Vertex>> predecessor;
+    unordered_map<Vertex, int> sigma;
+    unordered_map<Vertex, int> d;
+    unordered_map<Vertex, double> delta;
+
+    for (auto &pair : adjacency_list)
+    {
+
+        std::stack<Vertex> S;
+        // Initializing dictionaries
+        for (auto &p : adjacency_list)
+        {
+            sigma[p.first] = 0;
+            predecessor[p.first] = vector<Vertex>();
+            d[p.first] = -1;
+        }
+        sigma[pair.first] = 1;
+        d[pair.first] = 0;
+
+        // BFS begins
+        std::queue<Vertex> Q;
+        Q.push(pair.first);
+        while (!Q.empty())
+        {
+            Vertex v = Q.front();
+            Q.pop();
+            S.push(v);
+
+            for (auto &neighbor : adjacency_list[v])
+            {
+                // neighbor.first found for the first time
+                if (d[neighbor.first] < 0)
+                {
+                    Q.push(neighbor.first);
+                    d[neighbor.first] = d[v] + 1;
+                }
+
+                if (d[neighbor.first] == d[v] + 1)
+                {
+                    sigma[neighbor.first] += sigma[v];
+                    predecessor[neighbor.first].push_back(v);
+                }
+            }
+        }
+
+        // pairwise dependency accumulation
+        // initialize delta
+        for (auto &pair2 : adjacency_list)
+            delta[pair2.first] = 0.0;
+
+        while (!S.empty())
+        {
+            Vertex w = S.top();
+            S.pop();
+            for (auto &v : predecessor[w])
+            {
+                delta[v] += double(sigma[v]) / double(sigma[w]) * (1 + delta[w]);
+                if (w != pair.first)
+                    betweenness_centralities[w] += delta[w];
+            }
+        }
+    }
+
+    // Finding max centrality airport from centralities list
+    double max = -DBL_MAX;
+    Vertex best = "DEGAS";
+    for (auto &pair : betweenness_centralities)
+    {
+        if (pair.second > max)
+        {
+            max = pair.second;
+            best = pair.first;
+        }
+    }
+
+    return best;
+}
+
+int Graph::size()
+{
+    return adjacency_list.size();
+}
 
 /**
  * Prints the graph to stdout.
  */
 // void Graph::print() const
 // {
-//     for (auto it = adjacency_list.begin(); it != adjacency_list.end(); ++it) 
+//     for (auto it = adjacency_list.begin(); it != adjacency_list.end(); ++it)
 //     {
 //         cout << it->first << endl;
-//         for (auto it2 = it->second.begin(); it2 != it->second.end(); ++it2) 
+//         for (auto it2 = it->second.begin(); it2 != it->second.end(); ++it2)
 //         {
 //             std::stringstream ss;
-//             ss << it2->first; 
+//             ss << it2->first;
 //             string vertexColumn = "    => " + ss.str();
 //             vertexColumn += " " ;
 //             cout << std::left << std::setw(26) << vertexColumn;
