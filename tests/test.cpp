@@ -142,3 +142,16 @@ TEST_CASE("BFS4", "[BFS]") {
 TEST_CASE("BFS5", "[BFS]") {
     REQUIRE(graph.minNumConnections("CMI", "GMP")== 2); // Champaign to Gimpo (regional korean airport) --> 3
 }
+
+//Dijkstras Testing
+TEST_CASE("Dijkstra1", "[Dijkstra]") {
+    unordered_map<Vertex, double> distances = graph.shortestPathLength("CMI");
+    REQUIRE(distances["ORD"] >= 217);
+    REQUIRE(distances["ORD"] <= 219);
+    REQUIRE(distances["SFO"] >= 3181);
+    REQUIRE(distances["SFO"] <= 3182);
+    REQUIRE(distances["DFW"] >= 1114);
+    REQUIRE(distances["DFW"] <= 1116);
+    REQUIRE(distances["ICN"] >= 9646);
+    REQUIRE(distances["ICN"] <= 9648);
+}
