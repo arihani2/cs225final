@@ -52,11 +52,13 @@ To use our program, run `make` then `./main` in the build directory.
    - Input: Airport Graph
    - Output: The betweenness centrality values for all airports
 
+The path to the datasets from the entry directory in main.cpp is: `../data/filename.txt`
+
 ### Tests
 
 To run the test cases, run `make test` then `./test` in the build directory.
 
-We constructed test cases which utilized the enitre datasets, 
+We constructed test cases which utilized the enitre datasets. The data processing, graph implementation, and all algorithms were tested for all sorts of cases, including edge cases. Each function in the graph class contains several test cases.  
 
 ## Team Members
 
