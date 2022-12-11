@@ -29,7 +29,7 @@ We are using the [OpenFlights Airports Database](https://openflights.org/data.ht
 
 - Project report, development log, contract, etc. are in [`/documents` directory](https://github.com/arihani2/cs225final/tree/main/documents). 
 
-- The main.cpp file is located in the ['/entry' directory](https://github.com/arihani2/cs225final/tree/main/entry).
+- The main.cpp file is located in the [`/entry` directory](https://github.com/arihani2/cs225final/tree/main/entry).
 
 
 ## Running Instructions 
