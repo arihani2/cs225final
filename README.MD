@@ -23,7 +23,7 @@ We are using the [OpenFlights Airports Database](https://openflights.org/data.ht
 
 - Our source code containing our classes and functions are located in the [src directory](https://github.com/arihani2/cs225final/tree/main/src). 
 
-- Datasets are stored as txt files in the [`/data` directory](https://github.com/arihani2/cs225final/tree/main/data) directory.
+- Datasets are stored as txt files in the [`/data` directory](https://github.com/arihani2/cs225final/tree/main/data).
 
 - The Test cases and duplicate datasets are found in the [`/tests` directory](https://github.com/arihani2/cs225final/tree/main/tests).
 
